@@ -1,7 +1,13 @@
-import '../styles/globals.css'
+// import '../styles/globals.css'
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
-}
+import AuthState from "../context/auth/authState";
 
-export default MyApp
+const MyApp = ({ Component, pageProps }) => {
+  return (
+    <AuthState>
+      <Component {...pageProps} />
+    </AuthState>
+  );
+};
+
+export default MyApp;

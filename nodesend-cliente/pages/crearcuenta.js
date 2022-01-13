@@ -1,8 +1,15 @@
+import { useContext, useEffect } from "react";
 import { Layout } from "../components/Layout";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import authContext from "../context/auth/authContext";
 
 export default function CrearCuenta() {
+  // Acceder al state
+  const AuthContext = useContext(authContext);
+  const { usuarioAutenticado } = AuthContext;
+
+ 
   // Formulario y validación con formik y Yup
   const formik = useFormik({
     initialValues: {
@@ -12,8 +19,12 @@ export default function CrearCuenta() {
     },
     validationSchema: Yup.object({
       nombre: Yup.string().required("El nombre es obligatorio"),
-      email: Yup.string().email("El mail no es válido").required("El email es obligatorio"),
-      password: Yup.string().required("El password es obligatorio").min(6,'mínimo 6 caracteres')
+      email: Yup.string()
+        .email("El mail no es válido")
+        .required("El email es obligatorio"),
+      password: Yup.string()
+        .required("El password es obligatorio")
+        .min(6, "mínimo 6 caracteres"),
     }),
     onSubmit: valores => {
       console.log("Enviando Formulario", valores);
@@ -48,7 +59,7 @@ export default function CrearCuenta() {
                 />
                 {formik.touched.nombre && formik.errors.nombre ? (
                   <div className='my-4 bg-gray-400 border-l-4 border-r-4 border-red-500 p-4 '>
-                    <p className="font-bold ">Error</p>
+                    <p className='font-bold '>Error</p>
                     <p>{formik.errors.nombre}</p>
                   </div>
                 ) : null}
@@ -72,7 +83,7 @@ export default function CrearCuenta() {
                 />
                 {formik.touched.email && formik.errors.email ? (
                   <div className='my-4 bg-gray-400 border-l-4 border-r-4 border-red-500 p-4 '>
-                    <p className="font-bold ">Error</p>
+                    <p className='font-bold '>Error</p>
                     <p>{formik.errors.email}</p>
                   </div>
                 ) : null}
@@ -96,7 +107,7 @@ export default function CrearCuenta() {
                 />
                 {formik.touched.password && formik.errors.password ? (
                   <div className='my-4 bg-gray-400 border-l-4 border-r-4 border-red-500 p-4 '>
-                    <p className="font-bold ">Error</p>
+                    <p className='font-bold '>Error</p>
                     <p>{formik.errors.password}</p>
                   </div>
                 ) : null}
