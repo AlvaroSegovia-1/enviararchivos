@@ -4,6 +4,8 @@ import authReducer from "./authReducer";
 
 import { USUARIO_AUTENTICADO } from "../../types";
 
+import clienteAxios from "../../config/axios";
+
 const AuthState = ({ children }) => {
   // Definir un state inicial
   const initialState = {
@@ -14,6 +16,18 @@ const AuthState = ({ children }) => {
   };
   // Definir el reducer
   const [state, dispatch] = useReducer(authReducer, initialState);
+
+  // Registrar nuevos usuarios
+  const registrarUsuario = async datos => {
+    //console.log(datos);
+    try {
+        const respuesta = await clienteAxios.post('/api/usuarios', datos)
+        console.log(respuesta)
+    } catch (error) {
+        console.log(error)
+    }
+  };
+
   // Usuario autenticado
   const usuarioAutenticado = nombre => {
     dispatch({
@@ -28,6 +42,7 @@ const AuthState = ({ children }) => {
         autenticado: state.autenticado,
         usuario: state.usuario,
         mensaje: state.mensaje,
+        registrarUsuario,
         usuarioAutenticado,
       }}
     >
