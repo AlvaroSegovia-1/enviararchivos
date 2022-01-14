@@ -3,11 +3,12 @@ import { Layout } from "../components/Layout";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import authContext from "../context/auth/authContext";
+import Alerta from "../components/Alerta"
 
 export default function CrearCuenta() {
   // Acceder al state
   const AuthContext = useContext(authContext);
-  const { registrarUsuario } = AuthContext;
+  const { mensaje, registrarUsuario } = AuthContext;
 
   // Formulario y validación con formik y Yup
   const formik = useFormik({
@@ -27,7 +28,7 @@ export default function CrearCuenta() {
     }),
     onSubmit: valores => {
       //console.log("Enviando Formulario", valores);
-      registrarUsuario(valores)
+      registrarUsuario(valores);
     },
   });
 
@@ -38,6 +39,7 @@ export default function CrearCuenta() {
           {" "}
           Crear Cuenta
         </h2>
+        {mensaje && <Alerta/>}
         <div className='flex justify-center mt-5'>
           <div className='w-full max-w-lg'>
             <form className='' onSubmit={formik.handleSubmit}>
