@@ -1,8 +1,25 @@
+import { useContext, useEffect } from "react";
 import { Layout } from "../components/Layout";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import authContext from "../context/auth/authContext";
+import Alerta from "../components/Alerta";
+import { useRouter } from "next/router";
 
 export default function Login() {
+  // definir el context
+  const AuthContext = useContext(authContext);
+  const { mensaje, autenticado, iniciarSesion } = AuthContext;
+
+  // Next router
+  const router = useRouter();
+
+  useEffect(() => {
+    if (autenticado) {
+      router.push("/");
+    }
+  }, [autenticado]);
+
   // Formulario y validación con formik y Yup
   const formik = useFormik({
     initialValues: {
@@ -16,22 +33,22 @@ export default function Login() {
       password: Yup.string().required("El password es obligatorio"),
     }),
     onSubmit: valores => {
-      console.log("Enviando Formulario", valores);
+      //console.log("Enviando Formulario", valores);
+      iniciarSesion(valores);
     },
   });
 
   return (
     <Layout>
-       <div className='md:w-4/5 xl:w3/5 mx-auto mb-32'>
+      <div className='md:w-4/5 xl:w3/5 mx-auto mb-32'>
         <h2 className='text-4xl font-sans font-bold text-gray-600 text-center my-4'>
           {" "}
           Iniciar Sesión
         </h2>
+        {mensaje && <Alerta />}
         <div className='flex justify-center mt-5'>
           <div className='w-full max-w-lg'>
             <form className='' onSubmit={formik.handleSubmit}>
-              
-
               <div>
                 <label
                   className='block text-black text-sm font-bold  py-2'
@@ -50,7 +67,7 @@ export default function Login() {
                 />
                 {formik.touched.email && formik.errors.email ? (
                   <div className='my-4 bg-gray-400 border-l-4 border-r-4 border-red-500 p-4 '>
-                    <p className="font-bold ">Error</p>
+                    <p className='font-bold '>Error</p>
                     <p>{formik.errors.email}</p>
                   </div>
                 ) : null}
@@ -74,7 +91,7 @@ export default function Login() {
                 />
                 {formik.touched.password && formik.errors.password ? (
                   <div className='my-4 bg-gray-400 border-l-4 border-r-4 border-red-500 p-4 '>
-                    <p className="font-bold ">Error</p>
+                    <p className='font-bold '>Error</p>
                     <p>{formik.errors.password}</p>
                   </div>
                 ) : null}
