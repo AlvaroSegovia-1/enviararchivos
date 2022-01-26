@@ -15,11 +15,11 @@ exports.nuevoEnlace = async (req, res, next) => {
   // Crear un objeto de enlace
   //console.log(req.body);
 
-  const { nombre_original } = req.body;
+  const { nombre_original, nombre } = req.body;
 
   const enlace = new Enlaces();
   enlace.url = shortid.generate();
-  enlace.nombre = shortid.generate();
+  enlace.nombre = nombre;
   enlace.nombre_original = nombre_original;
 
   //console.log(enlace);
@@ -57,11 +57,24 @@ exports.nuevoEnlace = async (req, res, next) => {
   }
 };
 
+// Obtiene un listado de todos los enlaces
+exports.todosEnlaces = async (req, res) => {
+  try {
+    const enlaces = await Enlaces.find({}).select("url -_id");
+    res.json({ enlaces });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // Obtener el enlace
 exports.obtenerEnlace = async (req, res, next) => {
   //console.log(req.params.url)
   const { url } = req.params;
 
+  console.log(url);
+
+  // Verificar si existe ese enlace
   const enlace = await Enlaces.findOne({ url });
 
   if (!enlace) {
@@ -69,27 +82,10 @@ exports.obtenerEnlace = async (req, res, next) => {
   }
 
   //console.log(enlace);
+
   // Si el enlace existe
   res.json({ archivo: enlace.nombre });
+  //res.download({ archivo: enlace.nombre });
 
-  // Si las descargas son iguales a 1 - Borrar la entrada y borrar el archivo
-  const { descargas, nombre } = enlace;
-
-  if (descargas === 1) {
-    // console.log("Si solo 1");
-
-    // Eliminar el archivo
-    req.archivo = nombre;
-
-    // Eliminar la entrada de la BD
-    await Enlaces.findOneAndRemove(req.params.url);
-    next();
-  } else {
-    // Si las descargas son > a 1 - Restar 1
-    enlace.descargas--;
-    await enlace.save();
-    //console.log("Aún hay descargas");
-    console.log(descargas);
-  }
-  // Si las descargas son > a 1 - Restar 1
+  next();
 };

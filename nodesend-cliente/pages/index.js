@@ -16,7 +16,7 @@ export default function Index() {
 
   // Extraer el mensaje de error de archivos
   const AppContext = useContext(appContext);
-  const { mensaje_archivo } = AppContext;
+  const { mensaje_archivo, url } = AppContext;
 
   useEffect(() => {
     usuarioAutenticado();
@@ -24,29 +24,50 @@ export default function Index() {
 
   return (
     <Layout>
-      <div className='md:w-4/5 xl:w-3/5 mx-auto mb-32'>
-        {mensaje_archivo && <Alerta />}
-        <div className='lg:flex shadow-lg p-5 bg-white rounded-lg py-10'>
-          <Dropzone />
-
-          <div className='md:flex-1 mb-3 mx-2 mt-16 lg:mt-0'>
-            <h2 className='text-2xl font-sans font-bold text-gray-800 '>
-              Compartir archivos de forma sencilla y privada
-            </h2>
-            <p className='text-md leading-loose'>
-              <span className='text-red-500'>ReactNodeSend</span> te permite
-              compartir archivos con cifrado de extremo a extremo y un archivo
-              que es eliminado después de ser descargado. Así que puedes
-              mantener lo que compartes en privado y asegurarte de que tus cosas
-              no permanezcan en linea para siempre.
+      <div className='md:w-4/5 xl:w-3/5 mx-auto mt-16 mb-32'>
+        {url ? (
+          <div className="flex flex-col items-center">
+            <p className=' text-center text-2xl '>
+              <span className='font-bold text-red-600 uppercase'>
+                Tu URL es:{"  "}
+              </span>
+              {`${process.env.frontendURL}/enlaces/${url}`}
             </p>
-            <Link href='/crearcuenta'>
-              <a className='text-red-500 font-bold text-lg hover:text-red-700'>
-                Crea una cuenta para compartir más archivos
-              </a>
-            </Link>
+            <button
+              type='button'
+              className='w-3/4 bg-red-500 text-center  hover:bg-gray-900 w-full p-2 mt-10 mb-6 text-white uppercase font-bold'
+              onClick={()=>navigator.clipboard.writeText(`${process.env.frontendURL}/enlaces/${url}`)}
+            >
+              {" "}
+              Copiar Enlace
+            </button>
           </div>
-        </div>
+        ) : (
+          <>
+            {mensaje_archivo && <Alerta />}
+            <div className='lg:flex shadow-lg p-5 bg-white rounded-lg py-10'>
+              <Dropzone />
+
+              <div className='md:flex-1 mb-3 mx-2 mt-16 lg:mt-0'>
+                <h2 className='text-2xl font-sans font-bold text-gray-800 '>
+                  Compartir archivos de forma sencilla y privada
+                </h2>
+                <p className='text-md leading-loose'>
+                  <span className='text-red-500'>ReactNodeSend</span> te permite
+                  compartir archivos con cifrado de extremo a extremo y un
+                  archivo que es eliminado después de ser descargado. Así que
+                  puedes mantener lo que compartes en privado y asegurarte de
+                  que tus cosas no permanezcan en linea para siempre.
+                </p>
+                <Link href='/crearcuenta'>
+                  <a className='text-red-500 font-bold text-lg hover:text-red-700'>
+                    Crea una cuenta para compartir más archivos
+                  </a>
+                </Link>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </Layout>
   );

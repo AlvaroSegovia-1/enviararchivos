@@ -10,7 +10,7 @@ export const Layout = ({ children }) => {
       </Head>
 
       {/* <img src='logo.svg' /> */}
-      <div className='bg-gray-200 mix-h-screen'>
+      <div className='bg-gray-200 min-h-screen'>
         <div className='container mx-auto px-10 py-1'>
           <Header />
           <main className='mt-4'>{children}</main>

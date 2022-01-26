@@ -114,14 +114,6 @@ const AuthState = ({ children }) => {
     });
   };
 
-  // Usuario autenticado   NO
-  /*  const usuarioAutenticado = nombre => {
-      dispatch({
-      type: USUARIO_AUTENTICADO,
-      payload: nombre,
-    }); 
-  }; */
-
   return (
     <authContext.Provider
       value={{
