@@ -19,14 +19,18 @@ export default function Index() {
   const { mensaje_archivo, url } = AppContext;
 
   useEffect(() => {
-    usuarioAutenticado();
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      usuarioAutenticado();
+    }
   }, []);
 
   return (
     <Layout>
       <div className='md:w-4/5 xl:w-3/5 mx-auto mt-16 mb-32'>
         {url ? (
-          <div className="flex flex-col items-center">
+          <div className='flex flex-col items-center'>
             <p className=' text-center text-2xl '>
               <span className='font-bold text-red-600 uppercase'>
                 Tu URL es:{"  "}
@@ -36,7 +40,11 @@ export default function Index() {
             <button
               type='button'
               className='w-3/4 bg-red-500 text-center  hover:bg-gray-900 w-full p-2 mt-10 mb-6 text-white uppercase font-bold'
-              onClick={()=>navigator.clipboard.writeText(`${process.env.frontendURL}/enlaces/${url}`)}
+              onClick={() =>
+                navigator.clipboard.writeText(
+                  `${process.env.frontendURL}/enlaces/${url}`,
+                )
+              }
             >
               {" "}
               Copiar Enlace

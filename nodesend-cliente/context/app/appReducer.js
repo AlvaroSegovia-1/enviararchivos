@@ -6,6 +6,8 @@ import {
   SUBIR_ARCHIVO_ERROR,
   CREAR_ENLACE_EXITO,
   CREAR_ENLACE_ERROR,
+  AGREGAR_PASSWORD,
+  AGREGAR_DESCARGAS,
 } from "../../types";
 
 export default function (state, action) {
@@ -41,7 +43,17 @@ export default function (state, action) {
     case CREAR_ENLACE_EXITO:
       return {
         ...state,
-        url: action.payload
+        url: action.payload,
+      };
+    case AGREGAR_PASSWORD:
+      return {
+        ...state,
+        password: action.payload,
+      };
+    case AGREGAR_DESCARGAS:
+      return {
+        ...state,
+        descargas: action.payload,
       };
 
     default:

@@ -80,7 +80,7 @@ const AuthState = ({ children }) => {
     }, 2000);
   };
 
-  // Retorne el Usuario autenticado en base al JWT
+  // Retorna el Usuario autenticado en base al JWT
   const usuarioAutenticado = async () => {
     //console.log("Revisando ...");
     const token = localStorage.getItem("rs_token");
@@ -91,10 +91,14 @@ const AuthState = ({ children }) => {
     try {
       const respuesta = await clienteAxios.get("/api/auth");
       //console.log(respuesta.data.usuario);
-      dispatch({
-        type: USUARIO_AUTENTICADO,
-        payload: respuesta.data.usuario,
-      });
+      if(respuesta.data.usuario){
+        dispatch({
+          type: USUARIO_AUTENTICADO,
+          payload: respuesta.data.usuario,
+        });
+      }
+
+      
     } catch (error) {
       console.log(error.response.data.msg);
       dispatch({

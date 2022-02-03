@@ -7,6 +7,7 @@ import {
   LOGIN_ERROR,
   USUARIO_AUTENTICADO,
   CERRAR_SESION,
+  LIMPIAR_STATE
 } from "../../types";
 
 export default function (state, action) {
@@ -40,6 +41,7 @@ export default function (state, action) {
       return {
         ...state,
         usuario: action.payload,
+        autenticado: true
       };
     case CERRAR_SESION:
       localStorage.removeItem("rs_token");
@@ -49,6 +51,18 @@ export default function (state, action) {
         token: null,
         autenticado: null,
       };
+    case LIMPIAR_STATE:
+      return{
+        ...state,
+        mensaje_archivo: null,
+        nombre: "",
+        nombre_original: "",
+        cargando: null,
+        descargas: 1,
+        password: "",
+        autor: null,
+        url: "",
+      }
 
     default:
       return state;
